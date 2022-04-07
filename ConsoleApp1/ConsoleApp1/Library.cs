@@ -6,24 +6,18 @@ namespace ConsoleApp1
 {
     internal class Library
     {
-        private static int _libId;
-        public int LibId { get; }
+        public int LibId { get; set; }
         public string Name { get; set; }
-        private List<Book> _books { get; set; } = new List<Book>();
-        public Library()
-        {
-            _libId++;
-            LibId = _libId;
-        }
+        public List<Book> Books { get; set; } = new List<Book>();
         public void AddBook(Book book)
         {
-            _books.Add(book);
+            Books.Add(book);
         }
         public Book GetBookById(int? id)
         {
             if (id == null)
                 throw new NullReferenceException();
-            Book book = _books.Find(x => x.Id == id);
+            var book = Books.Find(x => x.Id == id);
             if (book == null)
                 throw new NullReferenceException();
                 
@@ -33,10 +27,14 @@ namespace ConsoleApp1
         {
             if (id == null)
                 throw new NullReferenceException();
-            Book book = _books.Find(x => x.Id == id);
+            Book book = Books.Find(x => x.Id == id);
             if (book == null)
                 throw new NullReferenceException();
-           _books.Remove(book);
+           Books.Remove(book);
+        }
+        public List<Book> GetAllBook()
+        {
+            return Books;
         }
     }
 }

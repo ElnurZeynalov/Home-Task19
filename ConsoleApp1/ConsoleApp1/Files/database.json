@@ -1,1 +1,24 @@
-
+{
+  "LibId": 1,
+  "Name": "Baki Book Center",
+  "Books": [
+    {
+      "Id": 1,
+      "Name": "Don Kixot",
+      "AuthorName": "Migel de Servantes",
+      "Price": 20.0
+    },
+    {
+      "Id": 2,
+      "Name": "7-ci mertebede qetl",
+      "AuthorName": "Elxan Elatli",
+      "Price": 8.0
+    },
+    {
+      "Id": 3,
+      "Name": "Difai fedaileri",
+      "AuthorName": "Sabir Rustemxanli",
+      "Price": 6.0
+    }
+  ]
+}

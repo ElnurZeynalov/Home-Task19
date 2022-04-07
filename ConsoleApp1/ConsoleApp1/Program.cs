@@ -11,13 +11,13 @@ namespace ConsoleApp1
             Console.WriteLine("Hello World!");
             string path = @"C:\Users\ELNUR\Desktop\Home Task\Home Task19\ConsoleApp1\ConsoleApp1\Files\";
             string file = @"C:\Users\ELNUR\Desktop\Home Task\Home Task19\ConsoleApp1\ConsoleApp1\Files\database.json";
+            if(!Directory.Exists(path))
                 Directory.CreateDirectory(path);
             if (!File.Exists(file))
-            {
                File.Create(file);
-            }
-                
             Library library = new Library();
+            library.LibId = 1;
+            library.Name = "Baki Book Center";
             bool exit = false;
             do
             {
@@ -28,26 +28,36 @@ namespace ConsoleApp1
                     case "0":
                         exit = true;
                         break;
-                    case "1":
-                        Console.Write("Kitabin adi: ");
+                    case "1": 
                         Book book = new Book();
+                        int id;
+                        string idStr;
+                        do
+                        {
+                            Console.Write("Kitabin Id daxil edin: ");
+                            idStr = Console.ReadLine();
+                        } while (!int.TryParse(idStr,out id));
+                        id = Convert.ToInt32(idStr);
+                        book.Id = id;
+                        Console.Write("Kitabin adi: ");
                         book.Name = Console.ReadLine();
                         Console.Write("Kitabin muellifi: ");
                         book.AuthorName = Console.ReadLine();
-                        Console.Write("Kitabin qiymeti: ");
+                        
                         double price;
                         string priceStr; 
                         do
                         {
+                            Console.Write("Kitabin qiymeti: ");
                             priceStr = Console.ReadLine();
                         } while (!double.TryParse(priceStr,out price));
                         price = Convert.ToDouble(priceStr);
                         book.Price = price;
                         library.AddBook(book);
-                        string convert = JsonConvert.SerializeObject(book);
+                        string convert = JsonConvert.SerializeObject(library);
                         using (StreamWriter sr = new StreamWriter(file))
                         {
-                            sr.WriteLine(convert);
+                            sr.Write(convert);
                         }
                         break;
                     case "2":
@@ -56,25 +66,25 @@ namespace ConsoleApp1
                         {
                             result = sr.ReadToEnd();
                         }
-                        Library newLibrary = JsonConvert.DeserializeObject<Library>(result);
-                        Console.WriteLine("Axdarilacaq kitabin Id daxil edin: ");
-                        int id;
-                        string idStr;
+                        library = JsonConvert.DeserializeObject<Library>(result);
+                        Console.Write("Axdarilacaq kitabin Id daxil edin: ");
+                        int wantedId;
+                        string wantedIdStr;
                         do
                         {
-                            idStr = Console.ReadLine();
-                        } while (!int.TryParse(idStr,out id));
-                        id = Convert.ToInt32(idStr);
-                        Console.WriteLine(newLibrary.GetBookById(id).ShowInfo()); 
-                    break;
+                            wantedIdStr = Console.ReadLine();
+                        } while (!int.TryParse(wantedIdStr, out wantedId));
+                        wantedId = Convert.ToInt32(wantedIdStr);
+                        Console.WriteLine(library.GetBookById(wantedId).ShowInfo());
+                        break;
                     case "3":
                         string removeResult;
                         using (StreamReader sr = new StreamReader(file))
                         {
                             removeResult = sr.ReadToEnd();
                         }
-                        newLibrary = JsonConvert.DeserializeObject<Library>(removeResult);
-                        Console.WriteLine("Silinecek kitabin Id daxil edin: ");
+                        library = JsonConvert.DeserializeObject<Library>(removeResult);
+                        Console.Write("Silinecek kitabin Id daxil edin: ");
                         int removedId;
                         string removedidStr;
                         do
@@ -82,8 +92,8 @@ namespace ConsoleApp1
                             removedidStr = Console.ReadLine();
                         } while (!int.TryParse(removedidStr, out removedId));
                         removedId = Convert.ToInt32(removedidStr);
-                        newLibrary.RemoveBook(removedId);
-                        string newLibraryStr = JsonConvert.SerializeObject(newLibrary);
+                        library.RemoveBook(removedId);
+                        string newLibraryStr = JsonConvert.SerializeObject(library);
                         using(StreamWriter sr = new StreamWriter(file))
                         {
                             sr.WriteLine(newLibraryStr);
